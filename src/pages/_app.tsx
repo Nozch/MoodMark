@@ -1,4 +1,5 @@
 import '../styles/globals.css'
+
 import { withTRPC } from '@trpc/next'
 import type { AppProps } from 'next/app'
 import { loggerLink } from '@trpc/client/links/loggerLink'
@@ -6,8 +7,15 @@ import { httpBatchLink } from '@trpc/client/links/httpBatchLink'
 import superjson from 'superjson'
 import { AppRouter } from '../server/route/app.router'
 
-function App({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
+
+
+
+function MyApp({ Component, pageProps }: AppProps) {
+  return (
+  <main>
+    <Component {...pageProps} />
+  </main>
+  )
 }
 
 export default withTRPC<AppRouter>({
@@ -39,8 +47,8 @@ export default withTRPC<AppRouter>({
         return {}
       },
       links,
-      transformer: superjson
+      transformer: superjson,
     }
   },
   ssr: false
-})(App)
+})(MyApp)
