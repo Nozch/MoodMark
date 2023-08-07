@@ -111,4 +111,9 @@ export const userRouter = createRouter()
         redirect: token.redirect,
       };
     },
+  })
+  .query('me', {
+    resolve({ ctx }) {
+      return ctx.user;
+    },
   });

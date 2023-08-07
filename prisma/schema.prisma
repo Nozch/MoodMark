@@ -18,6 +18,7 @@ model User {
   createAt   DateTime     @default(now())
   updatedAt  DateTime     @updatedAt
   LoginToken LoginToken[]
+  Stamp      Stamp[]
 }
 
 model LoginToken {
@@ -26,4 +27,33 @@ model LoginToken {
   user      User     @relation(fields: [userId], references: [id])
   userId    String
   redirect  String   @default("/")
+}
+
+model Stamp {
+  id           String         @unique @default(uuid())
+  createdAt    DateTime       @default(now())
+  mainFigure   String
+  frame        String
+  price        Int
+  gradients    Gradient[]
+  controlPoint ControlPoint[]
+  User         User           @relation(fields: [userId], references: [id])
+  userId       String
+}
+
+model Gradient {
+  id       String @id @default(uuid())
+  colorOne String
+  colorTwo String
+  style    String
+  stampId  String
+  stamp    Stamp  @relation(fields: [stampId], references: [id])
+}
+
+model ControlPoint {
+  id      String @id @default(uuid())
+  x       Int
+  y       Int
+  stampId String
+  stamp   Stamp  @relation(fields: [stampId], references: [id])
 }

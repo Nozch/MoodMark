@@ -7,14 +7,14 @@ import { trpc } from "@/utils/trpc";
 import { useState } from "react";
 
 function VerifyToken({ hash }: { hash: string }) {
-  // const router = useRouter()
+  const router = useRouter()
   const { data, isLoading } = trpc.useQuery(['users.verify-otp', {
     hash
   }])
   if (isLoading) {
     return <p>Verifying...</p>
   }
-  // router.push(data?.redirect.includes('login') ? '/' : data?.redirect || '/')
+  router.push(data?.redirect.includes('login') ? '/' : data?.redirect || '/')
 
   return <p>Redirecting...</p>
 }
@@ -33,13 +33,13 @@ function LoginForm() {
   });
 
   function onSubmit(values: CreateUserInput) {
-    mutate(values);
+    mutate({ ...values, redirect: router.asPath });
   }
 
   const hash = router.asPath.split('#token=')[1]
 
   if (hash) {
-    return <VerifyToken hash={hash}/>
+    return <VerifyToken hash={hash} />
   }
   return (
     <>
