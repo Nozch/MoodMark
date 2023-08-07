@@ -1,16 +1,17 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
-import { trpc } from "../utils/trpc";
+import { trpc } from "@/utils/trpc";
 import { CreateUserInput } from "@/schema/user.schema";
 
 function RegisterPage() {
-  const { handleSubmit, register } = useForm();
+  const { handleSubmit, register } = useForm<CreateUserInput>();
   const router = useRouter();
 
   const { mutate, error } = trpc.useMutation(["users.register-user"], {
-    onError: (error) => {},
-    onSuccess: () => {},
+    onSuccess: () => {
+      router.push('/login')
+    },
   });
 
   function onSubmit(values: CreateUserInput) {
@@ -19,7 +20,7 @@ function RegisterPage() {
 
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmit)}>{error && error.message}</form>
+      <form onSubmit={handleSubmit(onSubmit)}>{error && error.message}
       <h1>Register</h1>
       <input
         type="email"
@@ -29,6 +30,7 @@ function RegisterPage() {
       <br />
       <input type="text" placeholder="Bob" {...register("name")} />
       <button type="submit">Register</button>
+      </form>
       <Link href="/login">Login</Link>
     </>
   );

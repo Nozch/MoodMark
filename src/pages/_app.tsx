@@ -1,27 +1,27 @@
-import '../styles/globals.css'
+import '@/styles/globals.css'
 
 import { withTRPC } from '@trpc/next'
 import type { AppProps } from 'next/app'
 import { loggerLink } from '@trpc/client/links/loggerLink'
 import { httpBatchLink } from '@trpc/client/links/httpBatchLink'
 import superjson from 'superjson'
-import { AppRouter } from '../server/route/app.router'
+import { AppRouter } from '@/server/route/app.router'
+import { url } from '@/constants'
 
 
 
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-  <main>
-    <Component {...pageProps} />
-  </main>
+    <main>
+      <Component {...pageProps} />
+    </main>
   )
 }
 
 export default withTRPC<AppRouter>({
-  config({ctx}) {
-    const url = process.env.NEXT_PUBLIC_VERCEL_URL ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}/api/trpc` : `http://localhost:3000/api/trpc`
-  
+  config({ ctx }) {
+
     const links = [
       loggerLink(),
       httpBatchLink({
@@ -32,16 +32,16 @@ export default withTRPC<AppRouter>({
     return {
       queryClientConfig: {
         defaultOptions: {
-          queries:{
-            staleTime: 10,
+          queries: {
+            staleTime: 60,
           },
         },
       },
       headers() {
-        if(ctx?.req) {
+        if (ctx?.req) {
           return {
             ...ctx.req.headers,
-            'x-ssr':  '1',
+            'x-ssr': '1',
           }
         }
         return {}
