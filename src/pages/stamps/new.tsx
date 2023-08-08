@@ -5,7 +5,7 @@ import { CreateStampInput } from "@/schema/stamp.schema"
 import { useRouter } from "next/router"
 
 function CreatePostPage() {
-  const {handleSubmit, register} = useForm<CreateStampInput>()
+  const {handleSubmit, register, setValue} = useForm<CreateStampInput>()
 
   const router = useRouter()
   const {mutate, error} = trpc.useMutation(['stamps.create-stamp'], {
@@ -28,19 +28,23 @@ function CreatePostPage() {
     placeholder="price of stamp"
       {...register('price')}
     />
+    <label>
+    <input
+    type="color"
+    onChange={(e)=> setValue('color1', e.target.value)}
+    />
+    </label>
+    <br />
 
+    <label>
     <input
-    type="text"
-    placeholder="color code-1 for gradiention "
-      {...register('color1')}
+    type="color"
+    onChange={(e)=> setValue('color2', e.target.value)}
     />
+    </label>
+
     <br />
-    <input
-    type="text"
-    placeholder="color code-2 for gradiention"
-      {...register('color2')}
-    />
-    <br />
+
     <button>Create stamp</button>
   </form>
 }

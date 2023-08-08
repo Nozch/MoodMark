@@ -11,9 +11,10 @@ function StampListingPage() {
   return (
   <div>
     {data?.map(stamp => {
+      const createdAtDate = new Date(stamp.createdAt).toLocaleString();
       return (
         <article key={stamp.id}>
-          <p>{stamp.price}</p>
+          <p>{createdAtDate}</p>
           <Link href={`/stamps/${stamp.id}`}>View Stamp</Link>
         </article>
       )
