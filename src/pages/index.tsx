@@ -12,7 +12,7 @@ const Home: NextPage = () => {
   }
 
   return <div>
-    <Link href='/stamp/new'>
+    <Link href='/stamps/new'>
     Create Stamp
     </Link>
   </div>

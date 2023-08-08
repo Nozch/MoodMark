@@ -30,30 +30,43 @@ model LoginToken {
 }
 
 model Stamp {
-  id           String         @unique @default(uuid())
-  createdAt    DateTime       @default(now())
-  mainFigure   String
-  frame        String
+  id           String          @unique @default(uuid())
+  createdAt    DateTime        @default(now())
+  // mainFigure   String
+  // frame        String
   price        Int
-  gradients    Gradient[]
-  controlPoint ControlPoint[]
-  User         User           @relation(fields: [userId], references: [id])
+  color1  String
+  color2  String
+  // gradient Gradient[]
+  // controlPoint ControlPoint[]
+  user         User            @relation(fields: [userId], references: [id])
   userId       String
 }
 
-model Gradient {
-  id       String @id @default(uuid())
-  colorOne String
-  colorTwo String
-  style    String
-  stampId  String
-  stamp    Stamp  @relation(fields: [stampId], references: [id])
-}
 
-model ControlPoint {
-  id      String @id @default(uuid())
-  x       Int
-  y       Int
-  stampId String
-  stamp   Stamp  @relation(fields: [stampId], references: [id])
-}
+// todo: add ui for gradiention and bezier curve.
+// model Gradient {
+//   id     String          @unique @default(uuid())
+//   color1 String
+//   color2 String
+//   style  String
+//   stamps StampGradient[]
+// }
+
+// model StampGradient {
+//   stampId    String
+//   gradientId String
+//   stamp      Stamp    @relation(fields: [stampId], references: [id])
+//   gradient   Gradient @relation(fields: [gradientId], references: [id])
+
+//   @@id([stampId, gradientId])
+// }
+
+// todo: Implement UI for Bezier Curve
+// model ControlPoint {
+//   id      String @unique @default(uuid())
+//   x       Int
+//   y       Int
+//   stampId String @unique
+//   stamp   Stamp  @relation(fields: [stampId], references: [id])
+// }
