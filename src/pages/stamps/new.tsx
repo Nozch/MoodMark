@@ -3,8 +3,18 @@ import { useForm } from "react-hook-form"
 import { trpc } from "@/utils/trpc"
 import { CreateStampInput } from "@/schema/stamp.schema"
 import { useRouter } from "next/router"
+import { useState } from "react"
+import BezierCurveEditor from "@/components/BezierGradient"
+function CreateStampPage() {
+  const [points, setPoints] = useState({
+    start: { x: 0, y: 0 },
+    control1: { x: 10, y: 100 },
+    control2: { x: 0, y: 290 },
+    end: { x: 500, y: 0 }
+  });
 
-function CreatePostPage() {
+  const [colors, setColors] = useState(["#FF5733", "#33D7FF"])
+
   const {handleSubmit, register, setValue} = useForm<CreateStampInput>()
 
   const router = useRouter()
@@ -19,10 +29,25 @@ function CreatePostPage() {
     values.price = Number(values.price)
     mutate(values)
   }
+
+  function handleSliderChange(value) {
+    setPoints(prevPoints => ({
+      ...prevPoints,
+      control2: {
+        ...prevPoints.control2,
+        y: value
+      }
+    }))
+  }
   return <form onSubmit={handleSubmit(onSubmit)}>
     {error && error.message}
     <h1>Create Stamps</h1>
 
+    <BezierCurveEditor 
+      points={points}
+      handleSliderChange={handleSliderChange}
+      colors={colors}
+    />
     <input
     type="number"
     placeholder="price of stamp"
@@ -31,7 +56,8 @@ function CreatePostPage() {
     <label>
     <input
     type="color"
-    onChange={(e)=> setValue('color1', e.target.value)}
+    value={colors[0]}
+    onChange={(e)=> setColors([e.target.value, colors[1]])}
     />
     </label>
     <br />
@@ -39,7 +65,8 @@ function CreatePostPage() {
     <label>
     <input
     type="color"
-    onChange={(e)=> setValue('color2', e.target.value)}
+    value={colors[1]}
+    onChange={(e)=> setColors([colors[0], e.target.value])}
     />
     </label>
 
@@ -50,4 +77,4 @@ function CreatePostPage() {
 }
 
 
-export default CreatePostPage
+export default CreateStampPage
