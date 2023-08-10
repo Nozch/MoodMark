@@ -27,6 +27,7 @@ function CreateStampPage() {
 
   function onSubmit(values: CreateStampInput) {
     values.price = Number(values.price)
+    values.gradient = Number(values.gradient)
     mutate(values)
   }
 
@@ -38,6 +39,8 @@ function CreateStampPage() {
         y: value
       }
     }))
+
+    setValue('gradient', value)
   }
   return <form onSubmit={handleSubmit(onSubmit)}>
     {error && error.message}
@@ -45,9 +48,13 @@ function CreateStampPage() {
 
     <BezierCurveEditor 
       points={points}
+      value={points.control2.y}
       handleSliderChange={handleSliderChange}
       colors={colors}
     />
+
+    <input type="hidden" {...register('gradient')} value={points.control2.y} />
+
     <input
     type="number"
     placeholder="price of stamp"
@@ -57,6 +64,7 @@ function CreateStampPage() {
     <input
     type="color"
     value={colors[0]}
+    {...register('color1')}
     onChange={(e)=> setColors([e.target.value, colors[1]])}
     />
     </label>
@@ -66,7 +74,9 @@ function CreateStampPage() {
     <input
     type="color"
     value={colors[1]}
+    {...register('color2')}
     onChange={(e)=> setColors([colors[0], e.target.value])}
+    
     />
     </label>
 

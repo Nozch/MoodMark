@@ -15,6 +15,7 @@ export const createStampSchema = z.object({
   price: z.number().min(1).max(100), // 切手の値段として入る数字
   color1: z.string(),
   color2: z.string(),
+  gradient: z.number().min(290).max(2000)
   // mainFigure: z.string(), // 切手の主役
   // frame: z.string(), // 切手の枠
 

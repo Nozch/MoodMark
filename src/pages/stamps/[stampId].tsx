@@ -1,6 +1,7 @@
 import { useRouter } from "next/router"
 import { trpc } from "@/utils/trpc"
 import Error from "next/error"
+import BezierGradientPreview from "@/components/BezierGradientPreview"
 
 function SingleStampPage() {
   const router = useRouter()
@@ -17,17 +18,11 @@ function SingleStampPage() {
   if(!data) {
     return <Error statusCode={404}/>
   }
-  const gradientStyle = {
-    background: `linear-gradient(45deg, ${data.color1}, ${data.color2}`,
-    width: '160px',
-    height: '200px',
-    display: 'flex',
-    justifyContent: 'center',
-    color: 'white'
-  }
+  
   return (
-    <div style={gradientStyle}>
-      {data.price}
+    <div className="gradientContainer">
+      <span className="priceLabel">{data.price}</span>
+      <BezierGradientPreview control2Y={data.gradient} colors={[data.color1, data.color2]}/>
     </div>
   )
 }

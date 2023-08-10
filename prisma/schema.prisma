@@ -37,6 +37,7 @@ model Stamp {
   price        Int
   color1  String
   color2  String
+  gradient Int @default(290)
   // gradient Gradient[]
   // controlPoint ControlPoint[]
   user         User            @relation(fields: [userId], references: [id])

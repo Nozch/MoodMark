@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Stamp" ADD COLUMN     "gradient" INTEGER NOT NULL DEFAULT 290;
