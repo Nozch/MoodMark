@@ -1,0 +1,36 @@
+.slider {
+  overflow: hidden;
+  width: 400px;
+  height: 600px;
+  position: relative;
+}
+
+.imagesContainer {
+  display: flex;
+  transition: transform 0.3s ease-in-out;
+}
+
+.image {
+  width: 100%;
+  flex-shrink: 0;
+}
+
+.button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  background-color: rgba(0,0,0,0.5);
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+}
+
+.button.prev {
+  left: 0;
+}
+
+.button.next {
+  right: 0;
+}
