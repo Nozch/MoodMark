@@ -1,3 +1,4 @@
+import BezierGradientPreview from "@/components/BezierGradientPreview"
 import { trpc } from "@/utils/trpc"
 import Link from "next/link"
 
@@ -15,6 +16,14 @@ function StampListingPage() {
       return (
         <article key={stamp.id}>
           <p>{createdAtDate}</p>
+          <div className="gradientContainer">
+          <span className="priceLabel">{stamp.price}</span>
+          <BezierGradientPreview
+            control2Y={stamp.gradient}
+            colors={[stamp.color1, stamp.color2]}
+            uniqueId={stamp.id}
+          />
+          </div>
           <Link href={`/stamps/${stamp.id}`}>View Stamp</Link>
         </article>
       )
