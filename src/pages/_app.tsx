@@ -9,6 +9,7 @@ import { AppRouter } from '@/server/route/app.router'
 import { url } from '@/constants'
 import { trpc } from '@/utils/trpc'
 import { UserContextProvider } from '@/context/user.context'
+import { ChakraProvider } from '@chakra-ui/react'
 
 
 
@@ -23,7 +24,8 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   return (
   <UserContextProvider value={data}>
-    <main><Component {...pageProps} /></main>
+    <ChakraProvider>
+    <main><Component {...pageProps} /></main></ChakraProvider>
   </UserContextProvider>
   )
 }

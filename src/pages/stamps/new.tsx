@@ -1,11 +1,10 @@
-import { Center, NumberInput, NumberIncrementStepper, NumberInputField, NumberInputStepper, NumberDecrementStepper } from '@chakra-ui/react'
+import { Center, NumberInput, NumberIncrementStepper, NumberInputField, NumberInputStepper, NumberDecrementStepper, Button, VStack, Box, Input, Flex } from '@chakra-ui/react'
 import { useForm, Controller } from "react-hook-form"
 import { trpc } from "@/utils/trpc"
 import { CreateStampInput } from "@/schema/stamp.schema"
 import { useRouter } from "next/router"
 import { useState } from "react"
 import BezierCurveEditor from "@/components/BezierGradient"
-import ColorPicker from '@/components/ColorPicker'
 
 function CreateStampPage() {
   // 初期値 control2をユーザが操作
@@ -53,12 +52,32 @@ function CreateStampPage() {
     <h1>Create Stamps</h1>
     </Center>
     <Center>
+      <Flex flexDirection="column">
+        <Flex alignItems="center">
+          <Input
+          type="color"
+          value={colors[0]}
+          {...register('color1')}
+          onChange={(e) => setColors([e.target.value, colors[1]])}
+          />
+        </Flex>
+        <Flex alignItems="center">
+        <Input
+          type="color"
+          value={colors[1]}
+          {...register('color2')}
+          onChange={(e) => setColors([colors[0], e.target.value])}
+
+        />
+      </Flex>
+      </Flex>
       <BezierCurveEditor
         points={points}
         value={points.control2.y}
         handleSliderChange={handleSliderChange}
         colors={colors}
       />
+      
     </Center>
     <input type="hidden" {...register('gradient')} value={points.control2.y} />
     <Center>
@@ -84,30 +103,14 @@ function CreateStampPage() {
         )}
         />
       </Center>
-   
-    <label>
-      <input
-        type="color"
-        value={colors[0]}
-        {...register('color1')}
-        onChange={(e) => setColors([e.target.value, colors[1]])}
-      />
-    </label>
-    <br />
-
-    <label>
-      <input
-        type="color"
-        value={colors[1]}
-        {...register('color2')}
-        onChange={(e) => setColors([colors[0], e.target.value])}
-
-      />
-    </label>
-
-    <br />
-
-    <button>Create stamp</button>
+      <VStack spacing={4}>
+      <Box>
+      
+      </Box>
+     <Box> 
+     </Box>
+    </VStack>
+      <Button colorScheme='teal' variant='outline'>Create</Button>
 
   </form>
 }
