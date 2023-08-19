@@ -1,10 +1,11 @@
-
-import { useForm } from "react-hook-form"
+import { Center, NumberInput, NumberIncrementStepper, NumberInputField, NumberInputStepper, NumberDecrementStepper } from '@chakra-ui/react'
+import { useForm, Controller } from "react-hook-form"
 import { trpc } from "@/utils/trpc"
 import { CreateStampInput } from "@/schema/stamp.schema"
 import { useRouter } from "next/router"
 import { useState } from "react"
 import BezierCurveEditor from "@/components/BezierGradient"
+import ColorPicker from '@/components/ColorPicker'
 
 function CreateStampPage() {
   // 初期値 control2をユーザが操作
@@ -15,9 +16,9 @@ function CreateStampPage() {
     end: { x: 500, y: 0 }
   });
 
-  const [colors, setColors] = useState(["#FF5733", "#33D7FF"])
+  const [colors, setColors] = useState<[string, string]>(["#FF5733", "#33D7FF"])
 
-  const { handleSubmit, register, setValue } = useForm<CreateStampInput>()
+  const { control, handleSubmit, register, setValue } = useForm<CreateStampInput>()
 
   const router = useRouter()
   const { mutate, error } = trpc.useMutation(['stamps.create-stamp'], {
@@ -44,25 +45,46 @@ function CreateStampPage() {
 
     setValue('gradient', value)
   }
+  
 
   return <form onSubmit={handleSubmit(onSubmit)}>
     {error && error.message}
+    <Center>
     <h1>Create Stamps</h1>
-
+    </Center>
+    <Center>
       <BezierCurveEditor
         points={points}
         value={points.control2.y}
         handleSliderChange={handleSliderChange}
         colors={colors}
       />
-
+    </Center>
     <input type="hidden" {...register('gradient')} value={points.control2.y} />
-
-    <input
-      type="number"
-      placeholder="price of stamp"
-      {...register('price')}
-    />
+    <Center>
+      <Controller
+        name="price"
+        control={control}
+        defaultValue={0}
+        render={({field: { onChange, onBlur, value }}) => (
+          <NumberInput
+            min={0}
+            max={100}
+            value={value}
+            onChange={(valueAsString, valueAsNumber) => 
+              onChange(valueAsNumber)}
+            onBlur={onBlur}
+          >
+            <NumberInputField placeholder="price of stamp"/>
+              <NumberInputStepper>
+                <NumberIncrementStepper />
+                <NumberDecrementStepper />
+              </NumberInputStepper>
+          </NumberInput>
+        )}
+        />
+      </Center>
+   
     <label>
       <input
         type="color"
@@ -86,6 +108,7 @@ function CreateStampPage() {
     <br />
 
     <button>Create stamp</button>
+
   </form>
 }
 
